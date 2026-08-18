@@ -9,12 +9,19 @@
 </head>
 <body>
     <header class="site-header">
-        <div class="container">
-            <a href="{% url 'assessment:landing' %}" class="site-title">Web Security Assessment</a>
+        <div class="container header-inner">
+            <a href="{% url 'assessment:landing' %}" class="site-title">
+                <span class="site-logo" aria-hidden="true">&#9670;</span>
+                Web Security Assessment
+            </a>
+            <nav class="site-nav">
+                <a href="{% url 'assessment:landing' %}">Home</a>
+                <a href="{% url 'assessment:dashboard' %}">Dashboard</a>
+            </nav>
         </div>
     </header>
 
-    <main class="container">
+    <main class="container page-content">
         {% block content %}{% endblock %}
     </main>
 
