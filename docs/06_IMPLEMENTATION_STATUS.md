@@ -12,11 +12,11 @@ Do not mark a task as completed unless it has been implemented and verified.
 
 # Overall Status
 
-**Current Phase:** Phase 1 — Foundation (Complete)
+**Current Phase:** Phase 2 — Functional POC (Complete)
 
-**Overall Status:** Phase 1 Complete — Ready for Phase 2
+**Overall Status:** Phase 2 Complete — Ready for Phase 3
 
-**POC Functional Status:** Not Started (Phase 2)
+**POC Functional Status:** Functional POC implemented
 
 ---
 
@@ -61,76 +61,76 @@ Do not mark a task as completed unless it has been implemented and verified.
 
 ## Stage 1 — Assessment Initialization
 
-- [ ] Begin Assessment action implemented
-- [ ] Application assessment ID generated
-- [ ] Initial assessment state created
+- [x] Begin Assessment action implemented
+- [x] Application assessment ID generated
+- [x] Initial assessment state created
 
 ## Stage 2 — Target Verification
 
-- [ ] Target URL validation implemented
-- [ ] ZAP `accessUrl` integration implemented
-- [ ] Target accessibility handling implemented
-- [ ] Target verification UI implemented
-- [ ] Target verification failure handling implemented
+- [x] Target URL validation implemented
+- [x] ZAP `accessUrl` integration implemented
+- [x] Target accessibility handling implemented
+- [x] Target verification UI implemented
+- [x] Target verification failure handling implemented
 
 ## Stage 3 — Spider / Discovery
 
-- [ ] Spider start API integrated
-- [ ] Spider scan ID captured
-- [ ] Spider status polling implemented
-- [ ] Spider progress displayed
-- [ ] Spider results API integrated
-- [ ] Discovered URL count displayed
-- [ ] Spider failure handling implemented
+- [x] Spider start API integrated
+- [x] Spider scan ID captured
+- [x] Spider status polling implemented
+- [x] Spider progress displayed
+- [x] Spider results API integrated
+- [x] Discovered URL count displayed
+- [x] Spider failure handling implemented
 
 ## Stage 4 — Passive Scanner
 
-- [ ] Passive scanner status API integrated
-- [ ] Passive scanner polling implemented
-- [ ] `recordsToScan` handling implemented
-- [ ] Passive scanning completion state implemented
-- [ ] Passive scanner failure/timeout handling implemented
+- [x] Passive scanner status API integrated
+- [x] Passive scanner polling implemented
+- [x] `recordsToScan` handling implemented
+- [x] Passive scanning completion state implemented
+- [x] Passive scanner failure/timeout handling implemented
 
 ## Stage 5 — Active Scanner
 
-- [ ] Active Scan duration selector implemented
-- [ ] 5-minute option implemented
-- [ ] 10-minute option implemented
-- [ ] 15-minute option implemented
-- [ ] 30-minute option implemented
-- [ ] Active Scan duration configuration integrated with ZAP
-- [ ] Active Scan start API integrated
-- [ ] Active Scan ID captured
-- [ ] Active Scan status polling implemented
-- [ ] Active Scan progress displayed
-- [ ] Stop Scan action implemented
-- [ ] Manual stop handling implemented
-- [ ] Active Scan timeout handling implemented
-- [ ] Partial assessment state implemented
+- [x] Active Scan duration selector implemented
+- [x] 5-minute option implemented
+- [x] 10-minute option implemented
+- [x] 15-minute option implemented
+- [x] 30-minute option implemented
+- [x] Active Scan duration configuration integrated with ZAP
+- [x] Active Scan start API integrated
+- [x] Active Scan ID captured
+- [x] Active Scan status polling implemented
+- [x] Active Scan progress displayed
+- [x] Stop Scan action implemented
+- [x] Manual stop handling implemented
+- [x] Active Scan timeout handling implemented
+- [x] Partial assessment state implemented
 
 ## Stage 6 — Findings
 
-- [ ] Target-specific alerts retrieval implemented
-- [ ] Alert data processing implemented
-- [ ] Alert summary retrieval implemented
-- [ ] Risk counts displayed
-- [ ] Top five findings calculation implemented
-- [ ] Top five findings displayed
-- [ ] View All Findings implemented
-- [ ] Finding details displayed
+- [x] Target-specific alerts retrieval implemented
+- [x] Alert data processing implemented
+- [x] Alert summary retrieval implemented
+- [x] Risk counts displayed
+- [x] Top five findings calculation implemented
+- [x] Top five findings displayed
+- [x] View All Findings implemented
+- [x] Finding details displayed
 
 ## Stage 7 — Reporting
 
-- [ ] Report template API integrated
-- [ ] HTML template configured
-- [ ] JSON template configured
-- [ ] HTML report generation implemented
-- [ ] JSON report generation implemented
-- [ ] Backend report directory configured
-- [ ] Safe report filename generation implemented
-- [ ] HTML report download implemented
-- [ ] JSON report download implemented
-- [ ] Report generation error handling implemented
+- [x] Report template API integrated
+- [x] HTML template configured
+- [x] JSON template configured
+- [x] HTML report generation implemented
+- [x] JSON report generation implemented
+- [x] Backend report directory configured
+- [x] Safe report filename generation implemented
+- [x] HTML report download implemented
+- [x] JSON report download implemented
+- [x] Report generation error handling implemented
 
 ---
 
@@ -172,10 +172,10 @@ Animations must not interfere with application functionality.
 
 ## Basic Application Testing
 
-- [ ] Django application starts successfully
-- [ ] Landing page loads
-- [ ] Dashboard loads
-- [ ] Target URL validation works
+- [x] Django application starts successfully
+- [x] Landing page loads
+- [x] Dashboard loads
+- [x] Target URL validation works
 - [ ] Invalid URL is rejected
 - [ ] Empty URL is rejected
 
@@ -293,9 +293,16 @@ Phase 1 foundation implemented:
 - ZAP config loaded from `.env` via python-dotenv
 - `.env.example` provided for local setup (copy to `.env`)
 
-ZAP connectivity is verified on dashboard load via `/JSON/core/view/version/`.
+Phase 2 functional POC implemented:
 
-Start Assessment initializes in-memory state only; workflow orchestration is Phase 2.
+- Full ZAP workflow orchestration in background thread (`assessment_service.py`)
+- All ZAP client methods implemented (`zap_client.py`)
+- Finding normalization and prioritization (`assessment/findings.py`)
+- Django API endpoints: start, status, stop, duration, results, findings, report
+- Dashboard UI with JS polling (3-second interval) via `static/js/assessment.js`
+- Duration selector (5/10/15/30 min), stop scan, results, view all findings, report download
+
+Workflow runs automatically after Start Assessment; user only selects active scan duration and may stop the active scan.
 
 ## Status Update Rules
 
