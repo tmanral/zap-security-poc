@@ -3,216 +3,272 @@
 {% block title %}Security Assessment Dashboard{% endblock %}
 
 {% block content %}
-<section class="card dashboard-header fade-in">
-    <h1>Security Assessment</h1>
-    <p class="section-desc">Run an authorized web application security assessment.</p>
-
-    <div id="zap-status" class="status-panel {% if zap_status.available %}status-ok{% else %}status-error{% endif %}" role="status">
-        {% if zap_status.available %}
-            <span class="status-icon" aria-hidden="true">&#10003;</span>
-            <p class="status-message">OWASP ZAP is connected <span class="text-muted">(version {{ zap_status.version }})</span></p>
-        {% else %}
-            <span class="status-icon" aria-hidden="true">&#10007;</span>
-            <p class="status-message">{{ zap_status.error }}</p>
-        {% endif %}
-    </div>
-
-    <div id="start-section">
-        <form id="start-form" class="assessment-form">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="target_url">Target URL</label>
-                <input
-                    type="url"
-                    id="target_url"
-                    name="target_url"
-                    placeholder="https://example.com"
-                    autocomplete="url"
-                    required
-                >
-            </div>
-            <div id="start-error" class="alert alert-error hidden" role="alert"></div>
-            <button type="submit" id="start-btn" class="btn btn-primary" {% if not zap_status.available %}disabled{% endif %}>
-                Start Assessment
-            </button>
-        </form>
-    </div>
-</section>
-
-<section id="progress-section" class="card hidden fade-in">
-    <div class="card-header-row">
-        <h2>Assessment Progress</h2>
-        <span id="prog-id" class="badge badge-id">—</span>
-    </div>
-
-    <div class="target-display">
-        <span class="label">Target</span>
-        <span id="prog-target" class="target-url">—</span>
-    </div>
-
-    <ol class="stage-indicator" id="stage-indicator" aria-label="Assessment stages">
-        <li class="stage-item" data-stage="verify">
-            <span class="stage-icon" aria-hidden="true"></span>
-            <span class="stage-label">Target Verification</span>
-        </li>
-        <li class="stage-item" data-stage="discovery">
-            <span class="stage-icon" aria-hidden="true"></span>
-            <span class="stage-label">Website Discovery</span>
-        </li>
-        <li class="stage-item" data-stage="passive">
-            <span class="stage-icon" aria-hidden="true"></span>
-            <span class="stage-label">Passive Analysis</span>
-        </li>
-        <li class="stage-item" data-stage="active">
-            <span class="stage-icon" aria-hidden="true"></span>
-            <span class="stage-label">Active Security Testing</span>
-        </li>
-        <li class="stage-item" data-stage="findings">
-            <span class="stage-icon" aria-hidden="true"></span>
-            <span class="stage-label">Findings</span>
-        </li>
-        <li class="stage-item" data-stage="report">
-            <span class="stage-icon" aria-hidden="true"></span>
-            <span class="stage-label">Report</span>
-        </li>
-    </ol>
-
-    <div id="loading-indicator" class="loading-row hidden" role="status">
-        <span class="spinner" aria-hidden="true"></span>
-        <span id="prog-message" class="status-note">Starting assessment...</span>
-    </div>
-
-    <div id="progress-detail" class="progress-detail hidden">
-        <h3 id="progress-stage-title" class="progress-title">Progress</h3>
-        <div id="progress-bar-wrap" class="progress-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                <div id="progress-bar" class="progress-fill"></div>
-            </div>
-            <span id="progress-text" class="progress-text">0%</span>
-        </div>
-        <p id="discovered-count" class="status-note hidden"></p>
-    </div>
-</section>
-
-<section id="duration-section" class="card hidden fade-in">
-    <h2>Active Security Testing</h2>
-    <p class="section-desc">Select maximum scan duration, then start the active security test.</p>
-    <div class="duration-options" role="group" aria-label="Active scan duration">
-        <button type="button" class="btn btn-duration" data-duration="5">5 min</button>
-        <button type="button" class="btn btn-duration" data-duration="10">10 min</button>
-        <button type="button" class="btn btn-duration" data-duration="15">15 min</button>
-        <button type="button" class="btn btn-duration" data-duration="30">30 min</button>
-    </div>
-    <button type="button" id="start-active-btn" class="btn btn-primary" disabled>
-        Start Security Test
-    </button>
-    <div id="duration-error" class="alert alert-error hidden" role="alert"></div>
-</section>
-
-<section id="active-section" class="card hidden fade-in">
-    <h2>Active Security Testing</h2>
-    <p id="active-message" class="status-note">Testing application for vulnerabilities...</p>
-    <div class="progress-wrap">
-        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-            <div id="active-progress-bar" class="progress-fill progress-fill-active"></div>
-        </div>
-        <span id="active-progress-text" class="progress-text">0%</span>
-    </div>
-    <p id="elapsed-time" class="elapsed-time">Elapsed: 00:00</p>
-    <div class="stop-row">
-        <button type="button" id="stop-btn" class="btn btn-outline-danger">Stop Scan</button>
-    </div>
-</section>
-
-<section id="results-section" class="card hidden fade-in">
-    <h2>Security Assessment Results</h2>
-
-    <div id="result-banner" class="result-banner result-full">
-        <div class="result-banner-icon" id="result-icon" aria-hidden="true">&#10003;</div>
+<div class="dashboard-page fade-in">
+    <div class="dashboard-page-header">
         <div>
-            <p class="result-banner-title" id="result-banner-title">Assessment Completed</p>
-            <p class="result-banner-sub" id="result-banner-sub"></p>
+            <h1><i class="bi bi-speedometer2" aria-hidden="true"></i> Security Assessment</h1>
+            <p class="section-desc">Run an authorized web application security assessment powered by OWASP ZAP.</p>
         </div>
     </div>
 
-    <dl class="result-meta">
-        <div class="result-meta-row">
-            <dt>Target</dt>
-            <dd id="result-target">—</dd>
+    <div class="row g-4">
+        <div class="col-12">
+            <section class="card dashboard-header">
+                <div id="zap-status" class="status-panel {% if zap_status.available %}status-ok{% else %}status-error{% endif %}" role="status">
+                    {% if zap_status.available %}
+                        <i class="bi bi-check-circle-fill status-icon" aria-hidden="true"></i>
+                        <p class="status-message">OWASP ZAP is connected <span class="text-muted">(version {{ zap_status.version }})</span></p>
+                    {% else %}
+                        <i class="bi bi-x-circle-fill status-icon" aria-hidden="true"></i>
+                        <p class="status-message">{{ zap_status.error }}</p>
+                    {% endif %}
+                </div>
+
+                <div id="start-section">
+                    <h2 class="panel-title"><i class="bi bi-bullseye" aria-hidden="true"></i> Target URL</h2>
+                    <form id="start-form" class="assessment-form target-form-row">
+                        {% csrf_token %}
+                        <div class="form-group flex-grow-1">
+                            <label for="target_url" class="visually-hidden">Target URL</label>
+                            <input
+                                type="url"
+                                id="target_url"
+                                name="target_url"
+                                class="form-control form-control-lg mono-input"
+                                placeholder="https://example.com"
+                                autocomplete="url"
+                                required
+                            >
+                        </div>
+                        <button type="submit" id="start-btn" class="btn btn-primary btn-lg" {% if not zap_status.available %}disabled{% endif %}>
+                            <i class="bi bi-play-fill" aria-hidden="true"></i> Start Assessment
+                        </button>
+                    </form>
+                    <div id="start-error" class="alert alert-error hidden" role="alert"></div>
+                </div>
+            </section>
         </div>
-        <div class="result-meta-row">
-            <dt>Status</dt>
-            <dd id="result-status">—</dd>
+
+        <div class="col-12">
+            <section id="progress-section" class="card hidden">
+                <div class="card-header-row">
+                    <h2><i class="bi bi-activity" aria-hidden="true"></i> Assessment Progress</h2>
+                    <span id="prog-id" class="badge badge-id mono-text">—</span>
+                </div>
+
+                <div class="target-display">
+                    <span class="label"><i class="bi bi-link-45deg" aria-hidden="true"></i> Target</span>
+                    <span id="prog-target" class="target-url mono-text">—</span>
+                </div>
+
+                <ol class="stage-indicator stage-pipeline" id="stage-indicator" aria-label="Assessment stages">
+                    <li class="stage-item" data-stage="verify">
+                        <span class="stage-icon" aria-hidden="true"></span>
+                        <span class="stage-label"><i class="bi bi-bullseye"></i> Target Verification</span>
+                    </li>
+                    <li class="stage-item" data-stage="discovery">
+                        <span class="stage-icon" aria-hidden="true"></span>
+                        <span class="stage-label"><i class="bi bi-search"></i> Website Discovery</span>
+                    </li>
+                    <li class="stage-item" data-stage="passive">
+                        <span class="stage-icon" aria-hidden="true"></span>
+                        <span class="stage-label"><i class="bi bi-eye"></i> Passive Analysis</span>
+                    </li>
+                    <li class="stage-item" data-stage="active">
+                        <span class="stage-icon" aria-hidden="true"></span>
+                        <span class="stage-label"><i class="bi bi-lightning-charge"></i> Active Security Testing</span>
+                    </li>
+                    <li class="stage-item" data-stage="findings">
+                        <span class="stage-icon" aria-hidden="true"></span>
+                        <span class="stage-label"><i class="bi bi-bug"></i> Findings Analysis</span>
+                    </li>
+                    <li class="stage-item" data-stage="report">
+                        <span class="stage-icon" aria-hidden="true"></span>
+                        <span class="stage-label"><i class="bi bi-file-earmark-text"></i> Reports</span>
+                    </li>
+                </ol>
+
+                <div id="loading-indicator" class="loading-row hidden" role="status">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span id="prog-message" class="status-note">Starting assessment...</span>
+                </div>
+
+                <div id="progress-detail" class="progress-detail hidden">
+                    <h3 id="progress-stage-title" class="progress-title">Progress</h3>
+                    <div id="progress-bar-wrap" class="progress-wrap">
+                        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                            <div id="progress-bar" class="progress-fill"></div>
+                        </div>
+                        <span id="progress-text" class="progress-text mono-text">0%</span>
+                    </div>
+                    <p id="discovered-count" class="status-note hidden"></p>
+                </div>
+            </section>
         </div>
-        <div class="result-meta-row">
-            <dt>Assessment Type</dt>
-            <dd id="result-type">—</dd>
+
+        <div class="col-lg-6">
+            <section id="duration-section" class="card card-accent hidden h-100">
+                <h2><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i> Active Security Testing</h2>
+                <p class="section-desc">Select maximum scan duration, then start the active security test.</p>
+                <div class="duration-options" role="group" aria-label="Active scan duration">
+                    <button type="button" class="btn btn-duration" data-duration="5">5 min</button>
+                    <button type="button" class="btn btn-duration" data-duration="10">10 min</button>
+                    <button type="button" class="btn btn-duration" data-duration="15">15 min</button>
+                    <button type="button" class="btn btn-duration" data-duration="30">30 min</button>
+                </div>
+                <button type="button" id="start-active-btn" class="btn btn-primary btn-glow" disabled>
+                    <i class="bi bi-shield-check" aria-hidden="true"></i> Start Security Test
+                </button>
+                <div id="duration-error" class="alert alert-error hidden" role="alert"></div>
+            </section>
         </div>
-    </dl>
 
-    <h3 class="subsection-title">Security Findings</h3>
-    <div id="risk-summary" class="risk-summary"></div>
-
-    <h3 class="subsection-title">Top Findings</h3>
-    <div id="top-findings" class="finding-cards"></div>
-
-    <div class="reports-section">
-        <h3 class="subsection-title">Reports</h3>
-        <p class="section-desc">Download your assessment reports.</p>
-        <div id="report-status" class="report-status hidden" role="status"></div>
-        <div class="action-row">
-            <button type="button" id="download-html-btn" class="btn btn-primary">Download HTML Report</button>
-            <button type="button" id="download-json-btn" class="btn btn-primary">Download JSON Report</button>
+        <div class="col-lg-6">
+            <section id="active-section" class="card card-accent hidden h-100">
+                <h2><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i> Active Scan Running</h2>
+                <p id="active-message" class="status-note">Testing application for vulnerabilities...</p>
+                <p id="active-duration" class="active-meta mono-text hidden"></p>
+                <div class="progress-wrap">
+                    <div class="progress-bar progress-bar-active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <div id="active-progress-bar" class="progress-fill progress-fill-active"></div>
+                    </div>
+                    <span id="active-progress-text" class="progress-text mono-text">0%</span>
+                </div>
+                <p id="elapsed-time" class="elapsed-time mono-text">Elapsed: 00:00</p>
+                <div class="stop-row">
+                    <button type="button" id="stop-btn" class="btn btn-outline-danger">
+                        <i class="bi bi-stop-circle" aria-hidden="true"></i> Stop Scan
+                    </button>
+                </div>
+            </section>
         </div>
-        <div id="report-error" class="alert alert-error hidden" role="alert"></div>
-    </div>
 
-    <div class="action-row action-row-footer">
-        <button type="button" id="view-all-btn" class="btn btn-secondary">View All Findings</button>
-        <button type="button" id="new-assessment-btn" class="btn btn-secondary">Start New Assessment</button>
-    </div>
-</section>
+        <div class="col-12">
+            <section id="results-section" class="card hidden">
+                <h2><i class="bi bi-clipboard-data" aria-hidden="true"></i> Security Assessment Results</h2>
 
-<section id="all-findings-section" class="card hidden fade-in">
-    <div class="card-header-row">
-        <h2>All Findings</h2>
-        <button type="button" id="hide-findings-btn" class="btn btn-secondary btn-sm">Back to Results</button>
-    </div>
-    <p class="section-desc">Select a row to view finding details.</p>
-    <div class="table-wrap">
-        <table id="findings-table" class="findings-table">
-            <thead>
-                <tr>
-                    <th scope="col">Risk</th>
-                    <th scope="col">Confidence</th>
-                    <th scope="col">Finding</th>
-                    <th scope="col">Affected URL</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-    <div id="finding-detail" class="finding-detail hidden" role="region" aria-label="Finding details">
-        <h3 id="detail-name"></h3>
-        <dl class="detail-grid">
-            <dt>Risk</dt><dd id="detail-risk"></dd>
-            <dt>Confidence</dt><dd id="detail-confidence"></dd>
-            <dt>Affected URL</dt><dd id="detail-url"></dd>
-            <dt>Parameter</dt><dd id="detail-param"></dd>
-            <dt>Description</dt><dd id="detail-description"></dd>
-            <dt>Solution</dt><dd id="detail-solution"></dd>
-            <dt>Reference</dt><dd id="detail-reference"></dd>
-        </dl>
-    </div>
-</section>
+                <div id="result-banner" class="result-banner result-full">
+                    <div class="result-banner-icon" id="result-icon" aria-hidden="true">&#10003;</div>
+                    <div>
+                        <p class="result-banner-title" id="result-banner-title">Assessment Completed</p>
+                        <p class="result-banner-sub" id="result-banner-sub"></p>
+                    </div>
+                </div>
 
-<div id="stop-modal" class="modal hidden" role="dialog" aria-labelledby="stop-modal-title" aria-modal="true">
-    <div class="modal-backdrop" id="stop-modal-backdrop"></div>
-    <div class="modal-content card">
-        <h3 id="stop-modal-title">Stop the active security test?</h3>
-        <p>The current assessment will be treated as a partial assessment.</p>
-        <div class="modal-actions">
-            <button type="button" id="stop-cancel-btn" class="btn btn-secondary">Continue Scan</button>
+                <dl class="result-meta">
+                    <div class="result-meta-row">
+                        <dt>Target</dt>
+                        <dd id="result-target" class="mono-text">—</dd>
+                    </div>
+                    <div class="result-meta-row">
+                        <dt>Status</dt>
+                        <dd id="result-status">—</dd>
+                    </div>
+                    <div class="result-meta-row">
+                        <dt>Assessment Type</dt>
+                        <dd id="result-type">—</dd>
+                    </div>
+                </dl>
+
+                <h3 class="subsection-title"><i class="bi bi-bar-chart" aria-hidden="true"></i> Security Findings</h3>
+                <div id="risk-summary" class="risk-summary"></div>
+
+                <h3 class="subsection-title"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> Top Findings</h3>
+                <div id="top-findings" class="finding-cards"></div>
+
+                <div class="reports-section">
+                    <h3 class="subsection-title"><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> Reports</h3>
+                    <p class="section-desc">Download your assessment reports.</p>
+                    <div id="report-status" class="report-status hidden" role="status"></div>
+                    <div class="report-cards">
+                        <div class="report-card">
+                            <i class="bi bi-filetype-html report-icon" aria-hidden="true"></i>
+                            <div>
+                                <p class="report-card-title">HTML Report</p>
+                                <p class="report-card-desc">Full assessment report for review</p>
+                            </div>
+                            <button type="button" id="download-html-btn" class="btn btn-primary btn-sm">
+                                <i class="bi bi-download" aria-hidden="true"></i> Download
+                            </button>
+                        </div>
+                        <div class="report-card">
+                            <i class="bi bi-filetype-json report-icon" aria-hidden="true"></i>
+                            <div>
+                                <p class="report-card-title">JSON Report</p>
+                                <p class="report-card-desc">Machine-readable findings export</p>
+                            </div>
+                            <button type="button" id="download-json-btn" class="btn btn-primary btn-sm">
+                                <i class="bi bi-download" aria-hidden="true"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                    <div id="report-error" class="alert alert-error hidden" role="alert"></div>
+                </div>
+
+                <div class="action-row action-row-footer">
+                    <button type="button" id="view-all-btn" class="btn btn-secondary">
+                        <i class="bi bi-list-ul" aria-hidden="true"></i> View All Findings
+                    </button>
+                    <button type="button" id="new-assessment-btn" class="btn btn-secondary">
+                        <i class="bi bi-arrow-repeat" aria-hidden="true"></i> Start New Assessment
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-12">
+            <section id="all-findings-section" class="card hidden">
+                <div class="card-header-row">
+                    <h2><i class="bi bi-table" aria-hidden="true"></i> All Findings</h2>
+                    <button type="button" id="hide-findings-btn" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Results
+                    </button>
+                </div>
+                <p class="section-desc">Select a row to view finding details.</p>
+                <div class="findings-layout">
+                    <div class="table-wrap">
+                        <table id="findings-table" class="findings-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Risk</th>
+                                    <th scope="col">Confidence</th>
+                                    <th scope="col">Finding</th>
+                                    <th scope="col">Affected URL</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="finding-detail" class="finding-detail hidden" role="region" aria-label="Finding details">
+                        <h3 id="detail-name"></h3>
+                        <dl class="detail-grid">
+                            <dt>Risk</dt><dd id="detail-risk"></dd>
+                            <dt>Confidence</dt><dd id="detail-confidence"></dd>
+                            <dt>Affected URL</dt><dd id="detail-url" class="mono-text"></dd>
+                            <dt>Parameter</dt><dd id="detail-param" class="mono-text"></dd>
+                            <dt>Description</dt><dd id="detail-description"></dd>
+                            <dt>Solution</dt><dd id="detail-solution"></dd>
+                            <dt>Reference</dt><dd id="detail-reference" class="mono-text"></dd>
+                        </dl>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<div id="stop-modal" class="confirm-overlay hidden" role="dialog" aria-labelledby="stop-modal-title" aria-modal="true">
+    <div class="confirm-backdrop" id="stop-modal-backdrop"></div>
+    <div class="confirm-dialog card" role="document">
+        <h3 id="stop-modal-title">
+            <i class="bi bi-exclamation-triangle text-warning" aria-hidden="true"></i>
+            Stop Security Scan?
+        </h3>
+        <p>The active security scan is currently running. Are you sure you want to stop it?</p>
+        <div class="confirm-actions">
+            <button type="button" id="stop-cancel-btn" class="btn btn-secondary">Cancel</button>
             <button type="button" id="stop-confirm-btn" class="btn btn-danger">Stop Scan</button>
         </div>
     </div>

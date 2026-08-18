@@ -2,6 +2,7 @@ import json
 import logging
 import os
 
+from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
@@ -36,6 +37,7 @@ def landing(request):
     return render(request, "landing.html")
 
 
+@login_required
 @require_http_methods(["GET"])
 def assessment_dashboard(request):
     context = {
@@ -44,6 +46,7 @@ def assessment_dashboard(request):
     return render(request, "assessment.html", context)
 
 
+@login_required
 @require_http_methods(["POST"])
 def api_start(request):
     try:
@@ -61,17 +64,20 @@ def api_start(request):
         return _json_error(exc.user_message, status=409)
 
 
+@login_required
 @require_http_methods(["GET"])
 def api_status(request):
     return JsonResponse(AssessmentService.get_public_status())
 
 
+@login_required
 @require_http_methods(["POST"])
 def api_stop(request):
     AssessmentService.stop_active_scan()
     return JsonResponse({"ok": True})
 
 
+@login_required
 @require_http_methods(["POST"])
 def api_duration(request):
     try:
@@ -91,6 +97,7 @@ def api_duration(request):
         return _json_error(exc.user_message)
 
 
+@login_required
 @require_http_methods(["GET"])
 def api_results(request):
     results = AssessmentService.get_results()
@@ -99,12 +106,14 @@ def api_results(request):
     return JsonResponse(results)
 
 
+@login_required
 @require_http_methods(["GET"])
 def api_findings(request):
     findings = AssessmentService.get_all_findings()
     return JsonResponse({"findings": findings})
 
 
+@login_required
 @require_http_methods(["GET"])
 def api_report(request, report_format: str):
     if report_format not in ("html", "json"):

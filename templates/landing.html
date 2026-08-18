@@ -3,51 +3,64 @@
 {% block title %}Web Security Assessment — Home{% endblock %}
 
 {% block content %}
-<section class="card landing-card fade-in">
-    <div class="landing-badge">Security Assessment POC</div>
-    <h1>Web Security Assessment</h1>
-    <p class="lead">
-        Assess an authorized web application using OWASP ZAP and review automated security findings.
-    </p>
-    <p class="landing-desc">
-        Run a guided security assessment workflow from target verification through discovery,
-        passive analysis, active testing, findings review, and report generation.
-    </p>
-
-    <div class="workflow-steps" aria-label="Assessment workflow">
-        <div class="workflow-step">
-            <span class="workflow-step-num">1</span>
-            <span class="workflow-step-label">Target Verification</span>
+<section class="hero-section fade-in">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+            <div class="landing-badge"><i class="bi bi-radar" aria-hidden="true"></i> Security Assessment POC</div>
+            <h1 class="hero-title">Web Security Assessment</h1>
+            <p class="hero-lead">
+                Assess an authorized web application using OWASP ZAP and review automated security findings.
+            </p>
+            <p class="hero-desc">
+                Run a guided security assessment workflow from target verification through discovery,
+                passive analysis, active testing, findings review, and report generation.
+            </p>
+            <div class="hero-actions">
+                <a href="{% url 'assessment:dashboard' %}" class="btn btn-primary btn-lg btn-glow">
+                    <i class="bi bi-play-circle" aria-hidden="true"></i> Begin Security Assessment
+                </a>
+                <div class="landing-auth-links">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'assessment:dashboard' %}">Go to Dashboard</a>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}">Login</a>
+                        <span class="auth-separator" aria-hidden="true">|</span>
+                        <a href="{% url 'accounts:signup' %}">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        <span class="workflow-arrow" aria-hidden="true">&#8595;</span>
-        <div class="workflow-step">
-            <span class="workflow-step-num">2</span>
-            <span class="workflow-step-label">Website Discovery</span>
-        </div>
-        <span class="workflow-arrow" aria-hidden="true">&#8595;</span>
-        <div class="workflow-step">
-            <span class="workflow-step-num">3</span>
-            <span class="workflow-step-label">Passive Analysis</span>
-        </div>
-        <span class="workflow-arrow" aria-hidden="true">&#8595;</span>
-        <div class="workflow-step">
-            <span class="workflow-step-num">4</span>
-            <span class="workflow-step-label">Active Testing</span>
-        </div>
-        <span class="workflow-arrow" aria-hidden="true">&#8595;</span>
-        <div class="workflow-step">
-            <span class="workflow-step-num">5</span>
-            <span class="workflow-step-label">Findings</span>
-        </div>
-        <span class="workflow-arrow" aria-hidden="true">&#8595;</span>
-        <div class="workflow-step">
-            <span class="workflow-step-num">6</span>
-            <span class="workflow-step-label">Reports</span>
+        <div class="col-lg-5">
+            <div class="card workflow-card">
+                <h2 class="workflow-card-title"><i class="bi bi-diagram-3" aria-hidden="true"></i> Assessment Workflow</h2>
+                <div class="workflow-grid" aria-label="Assessment workflow">
+                    <div class="workflow-step">
+                        <span class="workflow-step-num">1</span>
+                        <span class="workflow-step-label"><i class="bi bi-bullseye"></i> Target Verification</span>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-num">2</span>
+                        <span class="workflow-step-label"><i class="bi bi-search"></i> Website Discovery</span>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-num">3</span>
+                        <span class="workflow-step-label"><i class="bi bi-eye"></i> Passive Analysis</span>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-num">4</span>
+                        <span class="workflow-step-label"><i class="bi bi-lightning-charge"></i> Active Testing</span>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-num">5</span>
+                        <span class="workflow-step-label"><i class="bi bi-bug"></i> Findings</span>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-num">6</span>
+                        <span class="workflow-step-label"><i class="bi bi-file-earmark-text"></i> Reports</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <a href="{% url 'assessment:dashboard' %}" class="btn btn-primary btn-lg">
-        Begin Security Assessment
-    </a>
 </section>
 {% endblock %}

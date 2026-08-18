@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
     'assessment',
 ]
 
@@ -129,6 +130,11 @@ ZAP_PORT = os.getenv('ZAP_PORT', '8081')
 ZAP_API_KEY = os.getenv('ZAP_API_KEY', '')
 ZAP_REPORT_DIR = os.getenv('ZAP_REPORT_DIR', r'L:\Pentest\zap-reports')
 ZAP_BASE_URL = f'http://{ZAP_HOST}:{ZAP_PORT}'
+
+# Authentication
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'assessment:dashboard'
+LOGOUT_REDIRECT_URL = 'assessment:landing'
 
 
 # Email
