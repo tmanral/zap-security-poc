@@ -12,11 +12,11 @@ Do not mark a task as completed unless it has been implemented and verified.
 
 # Overall Status
 
-**Current Phase:** Phase 3 — UI/UX Enhancement (Complete)
+**Current Phase:** Authentication Layer (Complete)
 
-**Overall Status:** All Phases Complete — POC Ready
+**Overall Status:** POC Complete with Authentication
 
-**POC Functional Status:** Functional POC with polished UI
+**POC Functional Status:** Functional POC with polished UI and authentication
 
 ---
 
@@ -168,6 +168,36 @@ Animations must not interfere with application functionality.
 
 ---
 
+# Authentication Layer
+
+## Accounts Application
+
+- [x] `accounts` Django app created
+- [x] Signup page implemented (`/accounts/signup/`)
+- [x] Login page implemented (`/accounts/login/`)
+- [x] Logout implemented (`/accounts/logout/`)
+- [x] Django built-in User model used (no custom user model)
+- [x] Django password hashing and validation used
+- [x] User accounts persisted in SQLite
+
+## Access Control
+
+- [x] `/assessment/` requires authentication
+- [x] Assessment API endpoints require authentication
+- [x] Landing page remains public
+- [x] Unauthenticated users redirected to login
+- [x] No user-to-assessment mapping introduced
+- [x] No roles or authorization layer introduced
+
+## Authentication UI
+
+- [x] Login/signup templates match existing Phase 3 theme
+- [x] Header navigation updated (Login/Sign Up or Logout)
+- [x] Landing page auth links added
+- [x] CSRF protection preserved on auth forms
+
+---
+
 # Testing
 
 ## Basic Application Testing
@@ -268,9 +298,9 @@ Record important implementation decisions here so that future Cursor sessions do
 |---|---|
 | Framework | Django |
 | Architecture | Monolithic |
-| Application Database | None |
+| Application Database | SQLite (auth only); assessment state in-memory |
 | Assessment State | In-memory |
-| Users | Single user |
+| Users | Multiple accounts; single operational user; no user-assessment mapping |
 | Concurrent Assessments | Not supported |
 | ZAP Location | Local machine |
 | ZAP Port | 8081 |
@@ -283,6 +313,7 @@ Record important implementation decisions here so that future Cursor sessions do
 | Report Directory | `L:\Pentest\zap-reports` |
 | Frontend Stack | Django Templates, CSS, vanilla JS |
 | UI Theme | Light professional security dashboard |
+| Authentication | Django built-in auth; `accounts` app; session-based |
 
 ## Development Notes
 
@@ -322,6 +353,13 @@ Phase 3 UI/UX enhancements:
 - Subtle fade/slide animations; responsive layout; focus states; reduced-motion support
 
 No backend, ZAP integration, or workflow logic changes in Phase 3.
+
+Authentication layer (see `docs/07_AUTHENTICATION_REQUIREMENTS.md`):
+
+- `accounts` app with signup, login, logout via Django built-in auth
+- User accounts stored in SQLite; assessment state remains in-memory with no user mapping
+- `@login_required` on dashboard and assessment API views only
+- No changes to ZAP client, assessment service, or workflow orchestration
 
 ## Status Update Rules
 

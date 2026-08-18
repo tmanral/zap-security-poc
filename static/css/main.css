@@ -987,3 +987,85 @@ h3 {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* Authentication */
+.auth-card {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.auth-form {
+    margin-top: 1rem;
+}
+
+.auth-switch {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.auth-switch a {
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.field-error {
+    color: #991b1b;
+    font-size: 0.85rem;
+    margin: 0.35rem 0 0;
+}
+
+.alert-success {
+    background: var(--color-success-bg);
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.nav-logout-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    transition: color var(--transition);
+}
+
+.nav-link-btn:hover,
+.nav-link-btn:focus-visible {
+    color: #fff;
+    outline: none;
+}
+
+.landing-auth-links {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.landing-auth-links a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.landing-auth-links a:hover {
+    text-decoration: underline;
+}
+
+.auth-separator {
+    margin: 0 0.5rem;
+    color: var(--color-text-muted);
+}
