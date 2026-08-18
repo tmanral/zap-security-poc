@@ -1,66 +1,230 @@
 {% extends "base.html" %}
 
-{% block title %}Web Security Assessment — Home{% endblock %}
+{% block title %}WebGuard — Web Application Security Assessment{% endblock %}
 
 {% block content %}
-<section class="hero-section fade-in">
-    <div class="row align-items-center g-4">
-        <div class="col-lg-7">
-            <div class="landing-badge"><i class="bi bi-radar" aria-hidden="true"></i> Security Assessment POC</div>
-            <h1 class="hero-title">Web Security Assessment</h1>
-            <p class="hero-lead">
-                Assess an authorized web application using OWASP ZAP and review automated security findings.
-            </p>
-            <p class="hero-desc">
-                Run a guided security assessment workflow from target verification through discovery,
-                passive analysis, active testing, findings review, and report generation.
-            </p>
-            <div class="hero-actions">
-                <a href="{% url 'assessment:dashboard' %}" class="btn btn-primary btn-lg btn-glow">
-                    <i class="bi bi-play-circle" aria-hidden="true"></i> Begin Security Assessment
-                </a>
-                <div class="landing-auth-links">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'assessment:dashboard' %}">Go to Dashboard</a>
-                    {% else %}
-                        <a href="{% url 'accounts:login' %}">Login</a>
-                        <span class="auth-separator" aria-hidden="true">|</span>
-                        <a href="{% url 'accounts:signup' %}">Sign Up</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="card workflow-card">
-                <h2 class="workflow-card-title"><i class="bi bi-diagram-3" aria-hidden="true"></i> Assessment Workflow</h2>
-                <div class="workflow-grid" aria-label="Assessment workflow">
-                    <div class="workflow-step">
-                        <span class="workflow-step-num">1</span>
-                        <span class="workflow-step-label"><i class="bi bi-bullseye"></i> Target Verification</span>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="workflow-step-num">2</span>
-                        <span class="workflow-step-label"><i class="bi bi-search"></i> Website Discovery</span>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="workflow-step-num">3</span>
-                        <span class="workflow-step-label"><i class="bi bi-eye"></i> Passive Analysis</span>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="workflow-step-num">4</span>
-                        <span class="workflow-step-label"><i class="bi bi-lightning-charge"></i> Active Testing</span>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="workflow-step-num">5</span>
-                        <span class="workflow-step-label"><i class="bi bi-bug"></i> Findings</span>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="workflow-step-num">6</span>
-                        <span class="workflow-step-label"><i class="bi bi-file-earmark-text"></i> Reports</span>
+<div class="landing-page">
+    <div id="landing-hero" class="landing-hero-viewport">
+        <section class="hero-section fade-in">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <div class="landing-badge"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> WebGuard</div>
+                    <h1 class="hero-title">WebGuard — Web Application Security Assessment</h1>
+                    <p class="hero-lead">
+                        Identify common web application security risks through a structured testing workflow
+                        aligned with widely recognized practices such as the OWASP Top 10.
+                    </p>
+                    <p class="hero-desc">
+                        Submit an authorized target, follow a guided process from verification through discovery,
+                        passive and active analysis, then review findings and download reports from one dashboard.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="{% url 'assessment:dashboard' %}" class="btn btn-primary btn-lg btn-glow">
+                            <i class="bi bi-play-circle" aria-hidden="true"></i> Begin Security Testing
+                        </a>
+                        <div class="landing-auth-links">
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'assessment:dashboard' %}">Go to Dashboard</a>
+                            {% else %}
+                                <a href="{% url 'accounts:login' %}">Login</a>
+                                <span class="auth-separator" aria-hidden="true">|</span>
+                                <a href="{% url 'accounts:signup' %}">Sign Up</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
+                <div class="col-lg-5">
+                    <div class="card workflow-card">
+                        <h2 class="workflow-card-title"><i class="bi bi-diagram-3" aria-hidden="true"></i> Testing Workflow</h2>
+                        <div class="workflow-grid" aria-label="Security testing workflow">
+                            <div class="workflow-step">
+                                <span class="workflow-step-num">1</span>
+                                <span class="workflow-step-label"><i class="bi bi-bullseye"></i> Target Verification</span>
+                            </div>
+                            <div class="workflow-step">
+                                <span class="workflow-step-num">2</span>
+                                <span class="workflow-step-label"><i class="bi bi-search"></i> Website Discovery</span>
+                            </div>
+                            <div class="workflow-step">
+                                <span class="workflow-step-num">3</span>
+                                <span class="workflow-step-label"><i class="bi bi-eye"></i> Passive Analysis</span>
+                            </div>
+                            <div class="workflow-step">
+                                <span class="workflow-step-num">4</span>
+                                <span class="workflow-step-label"><i class="bi bi-lightning-charge"></i> Active Testing</span>
+                            </div>
+                            <div class="workflow-step">
+                                <span class="workflow-step-num">5</span>
+                                <span class="workflow-step-label"><i class="bi bi-bug"></i> Findings</span>
+                            </div>
+                            <div class="workflow-step">
+                                <span class="workflow-step-num">6</span>
+                                <span class="workflow-step-label"><i class="bi bi-file-earmark-text"></i> Reports</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <a
+            href="#owasp-section"
+            class="owasp-scroll-banner"
+            id="owasp-scroll-banner"
+            aria-label="Scroll to OWASP Top 10 information"
+        >
+            <span class="owasp-scroll-banner-text">Explore OWASP Top 10</span>
+            <i class="bi bi-chevron-double-down owasp-scroll-arrow" aria-hidden="true"></i>
+        </a>
     </div>
-</section>
+
+    <section id="owasp-section" class="owasp-section" aria-labelledby="owasp-section-title">
+        <div class="owasp-section-inner">
+            <p class="owasp-section-eyebrow" id="owasp-section-title">Security Awareness</p>
+
+            <div class="owasp-intro-grid">
+                <div class="owasp-intro-block">
+                    <h2 class="owasp-intro-title">What is OWASP?</h2>
+                    <p class="owasp-intro-text">
+                        <strong>OWASP</strong> (Open Worldwide Application Security Project) is a nonprofit,
+                        community-driven organization dedicated to improving software and web application security
+                        through open resources, guidance, and education.
+                    </p>
+                </div>
+                <div class="owasp-intro-block">
+                    <h2 class="owasp-intro-title">What is the OWASP Top 10?</h2>
+                    <p class="owasp-intro-text">
+                        The <strong>OWASP Top 10</strong> is a widely referenced awareness document—not a scanner—that
+                        highlights common categories of web application security risks. It helps developers and security
+                        professionals prioritize what to look for when building and testing applications.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="owasp-top10-heading">OWASP Top 10:2021 — Risk Categories</h3>
+            <div class="owasp-top10-grid">
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A01</span>
+                    <h4 class="owasp-risk-name">Broken Access Control</h4>
+                    <p class="owasp-risk-desc">Users can access data or actions beyond their intended permissions.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A02</span>
+                    <h4 class="owasp-risk-name">Cryptographic Failures</h4>
+                    <p class="owasp-risk-desc">Sensitive data is exposed due to weak or missing encryption.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A03</span>
+                    <h4 class="owasp-risk-name">Injection</h4>
+                    <p class="owasp-risk-desc">Untrusted input is interpreted as commands, queries, or code.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A04</span>
+                    <h4 class="owasp-risk-name">Insecure Design</h4>
+                    <p class="owasp-risk-desc">Security gaps are introduced during design rather than implementation.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A05</span>
+                    <h4 class="owasp-risk-name">Security Misconfiguration</h4>
+                    <p class="owasp-risk-desc">Unsafe defaults, open cloud storage, or verbose error messages.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A06</span>
+                    <h4 class="owasp-risk-name">Vulnerable &amp; Outdated Components</h4>
+                    <p class="owasp-risk-desc">Libraries, frameworks, or dependencies with known vulnerabilities.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A07</span>
+                    <h4 class="owasp-risk-name">Identification &amp; Authentication Failures</h4>
+                    <p class="owasp-risk-desc">Weak login, session, or credential recovery mechanisms.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A08</span>
+                    <h4 class="owasp-risk-name">Software &amp; Data Integrity Failures</h4>
+                    <p class="owasp-risk-desc">Updates or data are accepted without verifying their integrity.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A09</span>
+                    <h4 class="owasp-risk-name">Logging &amp; Monitoring Failures</h4>
+                    <p class="owasp-risk-desc">Suspicious activity goes undetected due to insufficient logging.</p>
+                </article>
+                <article class="owasp-risk-card">
+                    <span class="owasp-risk-id">A10</span>
+                    <h4 class="owasp-risk-name">Server-Side Request Forgery</h4>
+                    <p class="owasp-risk-desc">The server is tricked into fetching unintended internal resources.</p>
+                </article>
+            </div>
+
+            <p class="owasp-section-note">
+                WebGuard helps users identify common web application security risks through a structured testing
+                workflow. It does not detect every category above automatically—use findings as a starting point
+                for further review.
+            </p>
+
+            <button type="button" class="owasp-back-top" id="owasp-back-top" aria-label="Back to top of landing page">
+                <i class="bi bi-chevron-double-up" aria-hidden="true"></i> Back to top
+            </button>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    "use strict";
+
+    var footerEl = document.querySelector(".site-footer p");
+    if (footerEl) {
+        footerEl.innerHTML =
+            '<i class="bi bi-shield-check" aria-hidden="true"></i> WebGuard — Authorized Security Testing Only';
+    }
+
+    var scrollBanner = document.getElementById("owasp-scroll-banner");
+    var backTopBtn = document.getElementById("owasp-back-top");
+    var owaspSection = document.getElementById("owasp-section");
+    var landingHero = document.getElementById("landing-hero");
+    var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function smoothScrollTo(target) {
+        if (!target) {
+            return;
+        }
+        target.scrollIntoView({
+            behavior: prefersReduced ? "auto" : "smooth",
+            block: "start",
+        });
+    }
+
+    if (scrollBanner) {
+        scrollBanner.addEventListener("click", function (e) {
+            e.preventDefault();
+            smoothScrollTo(owaspSection);
+        });
+    }
+
+    if (backTopBtn) {
+        backTopBtn.addEventListener("click", function () {
+            smoothScrollTo(landingHero);
+        });
+    }
+
+    if (owaspSection && "IntersectionObserver" in window) {
+        var revealObserver = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        owaspSection.classList.add("owasp-section-visible");
+                        revealObserver.disconnect();
+                    }
+                });
+            },
+            { threshold: 0.12 }
+        );
+        revealObserver.observe(owaspSection);
+    } else if (owaspSection) {
+        owaspSection.classList.add("owasp-section-visible");
+    }
+})();
+</script>
 {% endblock %}

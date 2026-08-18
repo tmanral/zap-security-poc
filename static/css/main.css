@@ -397,6 +397,274 @@ h2 i {
     text-decoration: underline;
 }
 
+/* Landing — OWASP scroll banner & educational section */
+.landing-page {
+    margin: -0.5rem 0 0;
+}
+
+.landing-hero-viewport {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100svh - 7.5rem);
+    padding-bottom: 4.5rem;
+}
+
+.owasp-scroll-banner {
+    position: absolute;
+    left: 50%;
+    bottom: 0.75rem;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 1.15rem;
+    background: rgba(17, 23, 34, 0.88);
+    border: 1px solid rgba(0, 212, 255, 0.35);
+    border-radius: 999px;
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.08), 0 0 18px rgba(0, 212, 255, 0.12);
+    cursor: pointer;
+    z-index: 10;
+    animation: owaspBannerFloat 3.5s ease-in-out infinite;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.owasp-scroll-banner:hover,
+.owasp-scroll-banner:focus-visible {
+    color: var(--text);
+    background: rgba(28, 36, 51, 0.95);
+    border-color: rgba(0, 212, 255, 0.55);
+    box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.2), 0 0 24px rgba(0, 212, 255, 0.22);
+    outline: none;
+}
+
+.owasp-scroll-arrow {
+    font-size: 1rem;
+    animation: owaspArrowBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes owaspBannerFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+@keyframes owaspArrowBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.85; }
+    50% { transform: translateY(4px); opacity: 1; }
+}
+
+.owasp-section {
+    scroll-margin-top: 5rem;
+    padding: 2.5rem 0 3rem;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(0, 212, 255, 0.02) 0%, transparent 40%);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.owasp-section.owasp-section-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.owasp-section-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.owasp-section-eyebrow {
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    margin: 0 0 1.25rem;
+}
+
+.owasp-intro-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.owasp-intro-block {
+    padding: 1rem 1.15rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.owasp-intro-title {
+    font-size: 1rem;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+}
+
+.owasp-intro-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.55;
+}
+
+.owasp-top10-heading {
+    font-size: 0.95rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 0.85rem;
+}
+
+.owasp-top10-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.55rem;
+}
+
+.owasp-risk-card {
+    padding: 0.65rem 0.75rem;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.owasp-risk-card:hover {
+    border-color: rgba(0, 212, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25), 0 0 12px rgba(0, 212, 255, 0.08);
+}
+
+.owasp-risk-id {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--accent-primary);
+    background: var(--accent-primary-dim);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    margin-bottom: 0.35rem;
+}
+
+.owasp-risk-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    line-height: 1.3;
+    color: var(--text);
+}
+
+.owasp-risk-desc {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.owasp-section-note {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin: 1.15rem auto 0;
+    max-width: 720px;
+    line-height: 1.5;
+}
+
+.owasp-back-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 1.25rem auto 0;
+    padding: 0.4rem 0.85rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.owasp-back-top:hover,
+.owasp-back-top:focus-visible {
+    color: var(--accent-primary);
+    border-color: rgba(0, 212, 255, 0.35);
+    background: var(--accent-primary-dim);
+    outline: none;
+}
+
+@media (max-width: 1100px) {
+    .owasp-top10-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .landing-hero-viewport {
+        min-height: auto;
+        padding-bottom: 4rem;
+    }
+
+    .owasp-intro-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .owasp-top10-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .owasp-scroll-banner {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        transform: none;
+        margin: 1.5rem auto 0;
+        width: fit-content;
+        animation: owaspBannerFloatMobile 3.5s ease-in-out infinite;
+    }
+
+    @keyframes owaspBannerFloatMobile {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+}
+
+@media (max-width: 480px) {
+    .owasp-top10-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .owasp-scroll-banner {
+        animation: none;
+    }
+
+    .owasp-scroll-arrow {
+        animation: none;
+    }
+
+    .owasp-section {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
 .auth-separator {
     margin: 0 0.5rem;
     color: var(--text-dim);
