@@ -90,6 +90,7 @@
 
     function riskClass(risk) {
         const key = (risk || "").toLowerCase();
+        if (key === "critical") return "critical";
         if (key === "high") return "high";
         if (key === "medium") return "medium";
         if (key === "low") return "low";
@@ -242,12 +243,20 @@
         if (data.status === "ACTIVE_SCANNING") {
             show(activeSection);
             setProgress("active-progress-bar", "active-progress-text", data.active_scan_progress);
+            const durEl = $("active-duration");
+            if (durEl && data.active_scan_duration) {
+                show(durEl);
+                durEl.textContent = "Duration limit: " + data.active_scan_duration + " minutes";
+            } else if (durEl) {
+                hide(durEl);
+            }
             if (lastStatus !== "ACTIVE_SCANNING") {
                 startElapsedTimer();
             }
         } else {
             hide(activeSection);
             stopElapsedTimer();
+            hide($("active-duration"));
         }
 
         lastStatus = data.status;
@@ -315,10 +324,11 @@
         const riskEl = $("risk-summary");
         if (riskEl) {
             riskEl.innerHTML = [
+                ["CRITICAL", summary.critical || 0, "critical"],
                 ["HIGH", summary.high || 0, "high"],
                 ["MEDIUM", summary.medium || 0, "medium"],
                 ["LOW", summary.low || 0, "low"],
-                ["INFORMATIONAL", summary.informational || 0, "informational"],
+                ["INFO", summary.informational || 0, "informational"],
             ]
                 .map(function (item) {
                     return (
@@ -449,7 +459,7 @@
         const statusEl = $("report-status");
         hide(errEl);
         show(statusEl);
-        statusEl.classList.remove("success");
+        statusEl.classList.remove("success", "failed");
         statusEl.textContent = "Generating " + format.toUpperCase() + " report...";
 
         fetch("/api/assessment/report/" + format + "/")
@@ -479,7 +489,9 @@
                 });
             })
             .catch(function (err) {
-                hide(statusEl);
+                show(statusEl);
+                statusEl.classList.add("failed");
+                statusEl.textContent = "Report generation failed";
                 showAlert("report-error", err.message);
             });
     }
@@ -499,6 +511,7 @@
         hide($("finding-detail"));
         hide($("start-error"));
         hide($("report-status"));
+        hide($("active-duration"));
 
         const targetInput = $("target_url");
         if (targetInput) targetInput.value = "";
@@ -511,11 +524,15 @@
     }
 
     function openStopModal() {
-        show($("stop-modal"));
+        const modal = $("stop-modal");
+        show(modal);
+        document.body.classList.add("confirm-overlay-open");
+        $("stop-cancel-btn")?.focus();
     }
 
     function closeStopModal() {
         hide($("stop-modal"));
+        document.body.classList.remove("confirm-overlay-open");
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -573,6 +590,13 @@
 
         $("stop-cancel-btn")?.addEventListener("click", closeStopModal);
         $("stop-modal-backdrop")?.addEventListener("click", closeStopModal);
+
+        document.addEventListener("keydown", function (e) {
+            const modal = $("stop-modal");
+            if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
+                closeStopModal();
+            }
+        });
 
         $("stop-confirm-btn")?.addEventListener("click", function () {
             closeStopModal();
