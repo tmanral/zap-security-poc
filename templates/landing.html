@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Web Security Assessment — Home{% endblock %}
+
+{% block content %}
+<section class="card landing-card">
+    <h1>Web Security Assessment</h1>
+    <p class="lead">
+        Automated web application security assessment powered by OWASP ZAP.
+    </p>
+    <p>
+        This proof of concept helps you run an authorized security assessment workflow:
+        target verification, website discovery, passive analysis, active testing,
+        findings review, and report generation.
+    </p>
+    <p class="workflow">
+        Target Verification &rarr; Discovery &rarr; Passive Analysis &rarr;
+        Active Testing &rarr; Findings &rarr; Report
+    </p>
+    <a href="{% url 'assessment:dashboard' %}" class="btn btn-primary">
+        Begin Security Assessment
+    </a>
+</section>
+{% endblock %}
