@@ -6,8 +6,7 @@
 <section class="card">
     <h1>Security Assessment</h1>
 
-    <div class="status-panel {% if zap_status.available %}status-ok{% else %}status-error{% endif %}">
-        <h2>ZAP Connection</h2>
+    <div id="zap-status" class="status-panel {% if zap_status.available %}status-ok{% else %}status-error{% endif %}">
         {% if zap_status.available %}
             <p class="status-message">&#10003; OWASP ZAP is connected (version {{ zap_status.version }})</p>
         {% else %}
@@ -15,56 +14,112 @@
         {% endif %}
     </div>
 
-    <form method="post" action="{% url 'assessment:dashboard' %}" class="assessment-form">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="target_url">Target URL</label>
-            <input
-                type="url"
-                id="target_url"
-                name="target_url"
-                placeholder="https://example.com"
-                value="{{ assessment.target_url|default:'' }}"
-                {% if assessment_running %}disabled{% endif %}
-                required
-            >
-        </div>
-
-        {% if validation_error %}
-            <p class="form-error">{{ validation_error }}</p>
-        {% endif %}
-
-        <button
-            type="submit"
-            class="btn btn-primary"
-            {% if assessment_running or not zap_status.available %}disabled{% endif %}
-        >
-            Start Assessment
-        </button>
-    </form>
+    <div id="start-section">
+        <form id="start-form" class="assessment-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="target_url">Target URL</label>
+                <input type="url" id="target_url" name="target_url" placeholder="https://example.com" required>
+            </div>
+            <p id="start-error" class="form-error hidden"></p>
+            <button type="submit" id="start-btn" class="btn btn-primary" {% if not zap_status.available %}disabled{% endif %}>
+                Start Assessment
+            </button>
+        </form>
+    </div>
 </section>
 
-<section class="card status-area">
-    <h2>Assessment Status</h2>
-    {% if assessment %}
-        <dl class="status-details">
-            <dt>Assessment ID</dt>
-            <dd>{{ assessment.application_scan_id }}</dd>
-
-            <dt>Target</dt>
-            <dd>{{ assessment.target_url }}</dd>
-
-            <dt>Status</dt>
-            <dd>{{ assessment.status }}</dd>
-
-            <dt>Current Stage</dt>
-            <dd>{{ assessment.current_stage }}</dd>
-        </dl>
-        <p class="status-note">
-            Assessment workflow orchestration will be implemented in Phase 2.
-        </p>
-    {% else %}
-        <p class="status-placeholder">No assessment started yet.</p>
-    {% endif %}
+<section id="progress-section" class="card hidden">
+    <h2>Assessment Progress</h2>
+    <dl class="status-details">
+        <dt>Assessment ID</dt><dd id="prog-id">—</dd>
+        <dt>Target</dt><dd id="prog-target">—</dd>
+        <dt>Stage</dt><dd id="prog-stage">—</dd>
+        <dt>Status</dt><dd id="prog-status">—</dd>
+    </dl>
+    <p id="prog-message" class="status-note"></p>
+    <div id="progress-bar-wrap" class="progress-wrap hidden">
+        <div class="progress-bar"><div id="progress-bar" class="progress-fill"></div></div>
+        <span id="progress-text" class="progress-text">0%</span>
+    </div>
+    <p id="discovered-count" class="status-note hidden"></p>
 </section>
+
+<section id="duration-section" class="card hidden">
+    <h2>Active Security Testing</h2>
+    <p>Select maximum scan duration:</p>
+    <div class="duration-options">
+        <button type="button" class="btn btn-duration" data-duration="5">5 min</button>
+        <button type="button" class="btn btn-duration" data-duration="10">10 min</button>
+        <button type="button" class="btn btn-duration" data-duration="15">15 min</button>
+        <button type="button" class="btn btn-duration" data-duration="30">30 min</button>
+    </div>
+    <p id="duration-error" class="form-error hidden"></p>
+</section>
+
+<section id="active-section" class="card hidden">
+    <h2>Active Security Testing</h2>
+    <p id="active-message" class="status-note">Testing application for vulnerabilities...</p>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div id="active-progress-bar" class="progress-fill"></div></div>
+        <span id="active-progress-text" class="progress-text">0%</span>
+    </div>
+    <button type="button" id="stop-btn" class="btn btn-danger">Stop Scan</button>
+</section>
+
+<section id="results-section" class="card hidden">
+    <h2>Security Assessment Results</h2>
+    <dl class="status-details">
+        <dt>Target</dt><dd id="result-target">—</dd>
+        <dt>Status</dt><dd id="result-status">—</dd>
+        <dt>Assessment Type</dt><dd id="result-type">—</dd>
+    </dl>
+
+    <h3>Security Findings</h3>
+    <div id="risk-summary" class="risk-summary"></div>
+
+    <h3>Top Findings</h3>
+    <ol id="top-findings" class="findings-list"></ol>
+
+    <div class="action-row">
+        <button type="button" id="view-all-btn" class="btn btn-secondary">View All Findings</button>
+        <button type="button" id="download-html-btn" class="btn btn-primary">Download HTML Report</button>
+        <button type="button" id="download-json-btn" class="btn btn-primary">Download JSON Report</button>
+        <button type="button" id="new-assessment-btn" class="btn btn-secondary">Start New Assessment</button>
+    </div>
+    <p id="report-error" class="form-error hidden"></p>
+</section>
+
+<section id="all-findings-section" class="card hidden">
+    <h2>All Findings</h2>
+    <button type="button" id="hide-findings-btn" class="btn btn-secondary">Back to Results</button>
+    <div class="table-wrap">
+        <table id="findings-table" class="findings-table">
+            <thead>
+                <tr>
+                    <th>Risk</th>
+                    <th>Confidence</th>
+                    <th>Finding</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div id="finding-detail" class="finding-detail hidden">
+        <h3 id="detail-name"></h3>
+        <p><strong>Risk:</strong> <span id="detail-risk"></span></p>
+        <p><strong>Confidence:</strong> <span id="detail-confidence"></span></p>
+        <p><strong>URL:</strong> <span id="detail-url"></span></p>
+        <p><strong>Parameter:</strong> <span id="detail-param"></span></p>
+        <p><strong>Description:</strong> <span id="detail-description"></span></p>
+        <p><strong>Solution:</strong> <span id="detail-solution"></span></p>
+        <p><strong>Reference:</strong> <span id="detail-reference"></span></p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/assessment.js' %}"></script>
 {% endblock %}

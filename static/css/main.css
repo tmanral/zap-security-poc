@@ -177,3 +177,145 @@ h2 {
 .landing-card .btn {
     margin-top: 1rem;
 }
+
+.hidden {
+    display: none !important;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #1a1a2e;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #fff;
+}
+
+.btn-duration {
+    background: #f3f4f6;
+    color: #1a1a2e;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.btn-duration:hover {
+    background: #dbeafe;
+}
+
+.progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #2563eb;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.875rem;
+    min-width: 3rem;
+}
+
+.duration-options {
+    margin: 1rem 0;
+}
+
+.action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.risk-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.risk-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dde1e7;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.risk-high { border-left: 4px solid #dc2626; }
+.risk-medium { border-left: 4px solid #ea580c; }
+.risk-low { border-left: 4px solid #ca8a04; }
+.risk-informational { border-left: 4px solid #6b7280; }
+
+.findings-list {
+    padding-left: 1.25rem;
+    margin: 0 0 1.5rem;
+}
+
+.findings-list li {
+    margin-bottom: 0.75rem;
+}
+
+.finding-url {
+    font-size: 0.85rem;
+    color: #555;
+    word-break: break-all;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.findings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.findings-table th,
+.findings-table td {
+    border: 1px solid #dde1e7;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+}
+
+.findings-table tbody tr {
+    cursor: pointer;
+}
+
+.findings-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.url-cell {
+    word-break: break-all;
+    max-width: 280px;
+}
+
+.finding-detail {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.finding-detail p {
+    margin: 0.5rem 0;
+}
