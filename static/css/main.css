@@ -1,0 +1,179 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    color: #1a1a2e;
+    background: #f4f6f9;
+}
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.site-header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+.site-title {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.site-footer {
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    text-align: center;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+main {
+    padding: 2rem 0;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #dde1e7;
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-size: 1.1rem;
+    margin-top: 0;
+}
+
+.lead {
+    font-size: 1.05rem;
+    color: #333;
+}
+
+.workflow {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.form-group input:disabled {
+    background: #f0f0f0;
+}
+
+.form-error {
+    color: #b91c1c;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.status-panel {
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.25rem;
+}
+
+.status-ok {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+}
+
+.status-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+.status-message {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.status-details {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 0.5rem 1rem;
+    margin: 0;
+}
+
+.status-details dt {
+    font-weight: 500;
+    color: #555;
+}
+
+.status-details dd {
+    margin: 0;
+}
+
+.status-placeholder,
+.status-note {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.assessment-form {
+    margin-top: 1rem;
+}
+
+.landing-card {
+    text-align: center;
+}
+
+.landing-card .btn {
+    margin-top: 1rem;
+}

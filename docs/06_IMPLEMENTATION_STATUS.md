@@ -12,11 +12,11 @@ Do not mark a task as completed unless it has been implemented and verified.
 
 # Overall Status
 
-**Current Phase:** Not Started
+**Current Phase:** Phase 1 — Foundation (Complete)
 
-**Overall Status:** Planning Complete
+**Overall Status:** Phase 1 Complete — Ready for Phase 2
 
-**POC Functional Status:** Not Started
+**POC Functional Status:** Not Started (Phase 2)
 
 ---
 
@@ -24,36 +24,36 @@ Do not mark a task as completed unless it has been implemented and verified.
 
 ## Project Structure
 
-- [ ] Django project initialized
-- [ ] Basic Django application structure created
-- [ ] Frontend and backend responsibilities separated
-- [ ] Static files structure created
-- [ ] Templates structure created
-- [ ] Environment/configuration structure created
+- [x] Django project initialized
+- [x] Basic Django application structure created
+- [x] Frontend and backend responsibilities separated
+- [x] Static files structure created
+- [x] Templates structure created
+- [x] Environment/configuration structure created
 
 ## ZAP Integration Foundation
 
-- [ ] ZAP configuration added
-- [ ] ZAP API key stored server-side
-- [ ] ZAP client/service layer created
-- [ ] ZAP connectivity verification implemented
-- [ ] ZAP API error handling implemented
+- [x] ZAP configuration added
+- [x] ZAP API key stored server-side
+- [x] ZAP client/service layer created
+- [x] ZAP connectivity verification implemented
+- [x] ZAP API error handling implemented
 
 ## Assessment State
 
-- [ ] In-memory assessment state implemented
-- [ ] Application-level assessment ID implemented
-- [ ] Assessment status/state model implemented
-- [ ] Spider scan ID tracking implemented
-- [ ] Active Scan ID tracking implemented
-- [ ] Current-stage tracking implemented
+- [x] In-memory assessment state implemented
+- [x] Application-level assessment ID implemented
+- [x] Assessment status/state model implemented
+- [x] Spider scan ID tracking implemented
+- [x] Active Scan ID tracking implemented
+- [x] Current-stage tracking implemented
 
 ## Basic UI
 
-- [ ] Landing page created
-- [ ] Assessment dashboard skeleton created
-- [ ] Basic target URL input created
-- [ ] Basic navigation between landing page and dashboard implemented
+- [x] Landing page created
+- [x] Assessment dashboard skeleton created
+- [x] Basic target URL input created
+- [x] Basic navigation between landing page and dashboard implemented
 
 ---
 
@@ -284,9 +284,18 @@ Record important implementation decisions here so that future Cursor sessions do
 
 ## Development Notes
 
-Use this section to record important implementation notes, discoveries, or deviations from the original requirements.
+Phase 1 foundation implemented:
 
-No implementation notes yet.
+- `assessment/state.py` — in-memory `AssessmentState` dataclass
+- `assessment/services/zap_client.py` — ZAP client with connectivity check and Phase 2 stubs
+- `assessment/services/assessment_service.py` — single-assessment state management
+- Landing page at `/`, dashboard at `/assessment/`
+- ZAP config loaded from `.env` via python-dotenv
+- `.env.example` provided for local setup (copy to `.env`)
+
+ZAP connectivity is verified on dashboard load via `/JSON/core/view/version/`.
+
+Start Assessment initializes in-memory state only; workflow orchestration is Phase 2.
 
 ## Status Update Rules
 

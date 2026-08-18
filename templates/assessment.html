@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Security Assessment Dashboard{% endblock %}
+
+{% block content %}
+<section class="card">
+    <h1>Security Assessment</h1>
+
+    <div class="status-panel {% if zap_status.available %}status-ok{% else %}status-error{% endif %}">
+        <h2>ZAP Connection</h2>
+        {% if zap_status.available %}
+            <p class="status-message">&#10003; OWASP ZAP is connected (version {{ zap_status.version }})</p>
+        {% else %}
+            <p class="status-message">&#10007; {{ zap_status.error }}</p>
+        {% endif %}
+    </div>
+
+    <form method="post" action="{% url 'assessment:dashboard' %}" class="assessment-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="target_url">Target URL</label>
+            <input
+                type="url"
+                id="target_url"
+                name="target_url"
+                placeholder="https://example.com"
+                value="{{ assessment.target_url|default:'' }}"
+                {% if assessment_running %}disabled{% endif %}
+                required
+            >
+        </div>
+
+        {% if validation_error %}
+            <p class="form-error">{{ validation_error }}</p>
+        {% endif %}
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            {% if assessment_running or not zap_status.available %}disabled{% endif %}
+        >
+            Start Assessment
+        </button>
+    </form>
+</section>
+
+<section class="card status-area">
+    <h2>Assessment Status</h2>
+    {% if assessment %}
+        <dl class="status-details">
+            <dt>Assessment ID</dt>
+            <dd>{{ assessment.application_scan_id }}</dd>
+
+            <dt>Target</dt>
+            <dd>{{ assessment.target_url }}</dd>
+
+            <dt>Status</dt>
+            <dd>{{ assessment.status }}</dd>
+
+            <dt>Current Stage</dt>
+            <dd>{{ assessment.current_stage }}</dd>
+        </dl>
+        <p class="status-note">
+            Assessment workflow orchestration will be implemented in Phase 2.
+        </p>
+    {% else %}
+        <p class="status-placeholder">No assessment started yet.</p>
+    {% endif %}
+</section>
+{% endblock %}
